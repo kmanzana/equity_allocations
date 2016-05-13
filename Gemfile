@@ -12,6 +12,8 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 
+gem 'crowd_pay'
+
 group :production do
   gem 'rails_12factor'
   gem 'puma'
