@@ -13,6 +13,8 @@ gem 'jquery-rails'
 gem 'turbolinks'
 
 gem 'crowd_pay'
+gem 'httparty'
+gem 'draper'
 
 group :production do
   gem 'rails_12factor'
@@ -32,3 +34,6 @@ group :development do
   gem 'spring'
 end
 
+group :test do
+  gem 'factory_girl_rails'
+end

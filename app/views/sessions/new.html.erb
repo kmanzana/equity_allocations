@@ -4,14 +4,14 @@
 <div>
   <div>
     <%= form_for(:session, url: login_path) do |f| %>
-      <%= f.label :email %>
-      <%= f.email_field :email %>
+      <%= f.label :username %>
+      <%= f.text_field :username %>
 
       <%= f.label :password %>
       <%= f.password_field :password %>
 
 
-      <%= f.label :remember_me, class: "checkbox inline" do %>
+      <%= f.label :remember_me, class: 'checkbox inline' do %>
         <%= f.check_box :remember_me %>
         <span>Remember me on this computer</span>
       <% end %>

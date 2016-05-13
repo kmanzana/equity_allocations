@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   attr_accessor :remember_token
 
-  validates :name,  presence: true, length: { maximum: 50 }
+  validates :first_name,  presence: true, length: { maximum: 50 }
 
   before_save { email.downcase! }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
                     uniqueness: { case_sensitive: false }
 
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :password, presence: true, length: { minimum: 6 }, unless: :password_digest?
 
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
