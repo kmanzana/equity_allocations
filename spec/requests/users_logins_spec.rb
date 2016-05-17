@@ -1,57 +1,70 @@
 require 'rails_helper'
 
 describe 'UsersLogins', type: :request do
-  it 'handles invalid login information' do
-    get login_path
-    expect(response).to render_template('sessions/new')
-    post login_path, session: { email: '', password: '' }
-    expect(response).to render_template('sessions/new')
-    expect(flash).to_not be_empty
-    get root_path
-    expect(flash).to be_empty
+  let(:user) { FactoryGirl.create :user }
+
+  context 'with invalid login information' do
+    before do
+      stub_request(:post, 'https://equityallocations.com/oauth/token')
+      .to_return status: 401, body: { error_description: 'test_error' }.to_json
+    end
+
+    it 'renders new and displays flash' do
+      get login_path
+      expect(response).to render_template('sessions/new')
+      post login_path, session: { username: '', password: '' }
+      expect(response).to render_template('sessions/new')
+      expect(flash).to_not be_empty
+      get root_path
+      expect(flash).to be_empty
+    end
   end
 
-  it 'handles valid login information' do
-    get login_path
-    post login_path, session: { email: @user.email, password: 'password' }
-    assert_redirected_to @user
-    follow_redirect!
-    assert_template 'users/show'
-    assert_select "a[href=?]", login_path, count: 0
-    assert_select "a[href=?]", logout_path
-    assert_select "a[href=?]", user_path(@user)
-    expect(is_logged_in?).to eq(true)
-  end
+  context 'with valid login information' do
+    include Capybara::DSL
 
+    before do
+      stub_request(:post, 'https://equityallocations.com/oauth/token')
+      .to_return status: 200, body: {
+        access_token: 'myaccesstoken',
+        expires_in: 3600,
+        token_type: 'Bearer',
+        scope: 'basic',
+        refresh_token: 'myrefreshtoken'
+      }.to_json
 
-  # to replace above test
-  test "login with valid information followed by logout" do
-    get login_path
-    post login_path, session: { email: @user.email, password: 'password' }
-    assert is_logged_in?
-    assert_redirected_to @user
-    follow_redirect!
-    assert_template 'users/show'
-    assert_select "a[href=?]", login_path, count: 0
-    assert_select "a[href=?]", logout_path
-    assert_select "a[href=?]", user_path(@user)
-    delete logout_path
-    assert_not is_logged_in?
-    assert_redirected_to root_url
-    delete logout_path
-    follow_redirect!
-    assert_select "a[href=?]", login_path
-    assert_select "a[href=?]", logout_path,      count: 0
-    assert_select "a[href=?]", user_path(@user), count: 0
-  end
+      stub_request(:get, 'https://equityallocations.com/wp-json/wp/v2/users/me')
+      .with(query: {
+        _envelope: '',
+        access_token: 'myaccesstoken',
+        context: 'edit'
+      })
+      .to_return status: 200, body: { body: { id: user.word_press_id } }.to_json
+    end
 
-  test "login with remembering" do
-    log_in_as(@user, remember_me: '1')
-    assert_not_nil cookies['remember_token']
-  end
+    it 'logs the user in and redirects to show page' do
+      visit login_path
+      fill_in :Username, with: user.username
+      fill_in :Password, with: 'password'
+      find('input[@value="Log in"]').click
+      expect(page.current_path).to eql(user_path(user))
+      expect(page).to_not have_link('Log in', href: login_path)
+      expect(page).to have_link('Log out', href: logout_path)
+      expect(page).to have_link('Profile', href: user_path(user))
+    end
 
-  test "login without remembering" do
-    log_in_as(@user, remember_me: '0')
-    assert_nil cookies['remember_token']
+    context 'login with remembering' do
+      it 'sets the remember_token in cookies' do
+        log_in_as user, remember_me: '1'
+        expect(cookies['remember_token']).to_not be_nil
+      end
+    end
+
+    context 'login without remembering' do
+      it 'does not set the remember_token in cookies' do
+        log_in_as user, remember_me: '0'
+        expect(cookies['remember_token']).to be_nil
+      end
+    end
   end
 end

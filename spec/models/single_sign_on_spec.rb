@@ -59,11 +59,9 @@ describe SingleSignOn do
         .to change(User, :count).by(1)
       end
 
-      it 'uses credentials for new user params' do
+      it 'uses username for new user params' do
         user = SingleSignOn.authenticate credentials
-
         expect(user.username).to eq(credentials[:username])
-        expect(user.authenticate(credentials[:password])).to be_truthy
       end
 
       it 'maps word_press data to new user params' do

@@ -1,16 +1,22 @@
 describe User do
   describe 'validations' do
     let(:user) do
-      User.new name: 'Example User', email: 'user@example.com',
-               password: 'foobar', password_confirmation: 'foobar'
+      User.new first_name: 'Example', last_name: 'User',
+               email: 'user@example.com', username: 'exampleuser'
+
     end
 
     it 'is valid' do
       expect(user).to be_valid
     end
 
-    it 'validates name presence' do
-      user.name = ''
+    it 'validates first_name presence' do
+      user.first_name = ''
+      expect(user).to_not be_valid
+    end
+
+    it 'validates last_name presence' do
+      user.last_name = ''
       expect(user).to_not be_valid
     end
 
@@ -19,13 +25,18 @@ describe User do
       expect(user).to_not be_valid
     end
 
-    it 'validates name length' do
-      user.name = 'a' * 51
+    it 'validates first_name length' do
+      user.first_name = 'a' * 51
+      expect(user).to_not be_valid
+    end
+
+    it 'validates last_name length' do
+      user.last_name = 'a' * 51
       expect(user).to_not be_valid
     end
 
     it 'validates email length' do
-      user.email = 'a' * 244 + '@example.com'
+      user.email = 'a' * 39 + '@example.com'
       expect(user).to_not be_valid
     end
 
@@ -63,21 +74,12 @@ describe User do
       user.save
       expect(mixed_case_email.downcase).to eq(user.reload.email)
     end
-
-    it 'validates password presence' do
-      user.password = user.password_confirmation = ' ' * 6
-      expect(user).to_not be_valid
-    end
-
-    it 'validates password length' do
-      user.password = user.password_confirmation = 'a' * 5
-      expect(user).to_not be_valid
-    end
   end
 
   describe '#authenticated?' do
     it 'returns false for a user with nil digest' do
-      expect(@user.authenticated?('')).to eq(false)
+      user = FactoryGirl.build :user
+      expect(user.authenticated?('')).to eq(false)
     end
   end
 end

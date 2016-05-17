@@ -69,6 +69,21 @@ class WordPress
     @error = error
   end
 
+  # example access token expiration response
+  # {
+  #   "body": {
+  #     "code": "rest_not_logged_in",
+  #     "message": "You are not currently logged in.",
+  #     "data": {
+  #       "status": 401
+  #     }
+  #   },
+  #   "status": 401,
+  #   "headers": {
+  #     "Allow": "GET"
+  #   }
+  # }
+
   # def refresh
   #   response = post '/oauth/token', body: {
   #     refresh_token: refresh_token,

@@ -18,7 +18,7 @@ class SingleSignOn
   end
 
   def find_or_create_user
-    return false if client.error?
+    return false if client.error? # too confusing implicit call to auth
 
     User.create_with(user_params).find_or_create_by! word_press_id: user['id']
   end

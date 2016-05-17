@@ -36,4 +36,6 @@ end
 
 group :test do
   gem 'factory_girl_rails'
+  gem 'webmock', require: false
+  gem 'capybara'
 end

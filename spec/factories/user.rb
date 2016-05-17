@@ -5,6 +5,5 @@ FactoryGirl.define do
     email 'alan@watts.com'
     word_press_id 11
     username 'alanwatts'
-    password_digest { SecureRandom.urlsafe_base64 }
   end
 end
