@@ -1,8 +1,44 @@
-<header>
-  <div>
-    <%= link_to 'home', root_path, id: 'logo' %>
+<nav class='navbar navbar-default navbar-fixed-top'>
+  <div class='container'>
+    <div class='navbar-header'>
+      <%= link_to root_path, id: 'logo' do %>
+        <%= image_tag 'https://equityallocations.com/wp-content/uploads/2016/04/17096_logopnggreen.png' %>
+      <% end %>
+    </div>
+    <div class='header-text'>
+      <ul class='nav navbar-nav navbar-right'>
+        <li><%= link_to 'Home', root_path %></li>
+        <li><%#= link_to 'Help', help_path %></li>
+        <% if logged_in? %>
+          <li><%= link_to 'Users', '#' %></li>
+          <li class='dropdown'>
+            <a href='#' class='dropdown-toggle' data-toggle='dropdown'>
+              Account <b class='caret'></b>
+            </a>
+            <ul class='dropdown-menu'>
+              <li><%= link_to 'Profile', current_user %></li>
+              <li><%= link_to 'Settings', '#' %></li>
+              <li class='divider'></li>
+              <li>
+                <%= link_to 'Log out', logout_path, method: 'delete' %>
+              </li>
+            </ul>
+          </li>
+        <% else %>
+          <li><%= link_to 'Log in', login_path %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- <header class='navbar navbar-fixed-top navbar-default'>
+  <div class='container'>
+    <%= link_to root_path, id: 'logo' do %>
+      <%= image_tag 'https://equityallocations.com/wp-content/uploads/2016/04/17096_logopnggreen.png' %>
+    <% end %>
     <nav>
-      <ul>
+      <ul class='nav navbar-nav navbar-right'>
         <li><%= link_to 'Home', root_path %></li>
         <li><%#= link_to 'Help', help_path %></li>
         <% if logged_in? %>
@@ -26,4 +62,4 @@
       </ul>
     </nav>
   </div>
-</header>
+</header> -->
