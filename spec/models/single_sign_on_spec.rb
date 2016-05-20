@@ -64,12 +64,12 @@ describe SingleSignOn do
         expect(user.username).to eq(credentials[:username])
       end
 
-      it 'maps word_press data to new user params' do
+      it 'maps word_press data to new investor params' do
         user = SingleSignOn.authenticate credentials
 
-        expect(user.first_name).to eq(mock_client.current_user['first_name'])
-        expect(user.last_name).to eq(mock_client.current_user['last_name'])
-        expect(user.email).to eq(mock_client.current_user['email'])
+        expect(investor.first_name).to eq(mock_client.current_user['first_name'])
+        expect(investor.last_name).to eq(mock_client.current_user['last_name'])
+        expect(investor.email).to eq(mock_client.current_user['email'])
       end
 
       it 'maps id to word_press_id' do

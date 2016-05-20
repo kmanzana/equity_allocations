@@ -11,23 +11,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160513161755) do
+ActiveRecord::Schema.define(version: 20160519171535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "users", force: :cascade do |t|
+  create_table "investors", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "tax_id"
+    t.boolean  "verified"
+    t.integer  "investor_id"
+    t.string   "investor_key"
+    t.string   "first_name"
+    t.string   "middle_name"
+    t.string   "last_name"
+    t.string   "organization_name"
+    t.datetime "birth_date"
+    t.boolean  "foreign_address"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.boolean  "person"
     t.string   "email"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "investors", ["investor_id"], name: "index_investors_on_investor_id", unique: true, using: :btree
+  add_index "investors", ["investor_key"], name: "index_investors_on_investor_key", unique: true, using: :btree
+  add_index "investors", ["tax_id"], name: "index_investors_on_tax_id", unique: true, using: :btree
+  add_index "investors", ["user_id"], name: "index_investors_on_user_id", using: :btree
+
+  create_table "users", force: :cascade do |t|
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "remember_digest"
-    t.string   "first_name"
-    t.string   "last_name"
     t.string   "username"
     t.integer  "word_press_id"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "investors", "users"
 end

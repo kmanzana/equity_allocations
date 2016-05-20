@@ -1,14 +1,8 @@
 class User < ActiveRecord::Base
+  has_one :investor
   attr_accessor :remember_token
 
-  validates :first_name, presence: true, length: { maximum: 50 }
-  validates :last_name,  presence: true, length: { maximum: 50 }
-
-  before_save { email.downcase! }
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
-  validates :email, presence: true, length: { maximum: 50 },
-                    format: { with: VALID_EMAIL_REGEX },
-                    uniqueness: { case_sensitive: false }
+  validates_presence_of :word_press_id, :username
 
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -32,5 +26,9 @@ class User < ActiveRecord::Base
 
   def forget
     update_attribute(:remember_digest, nil)
+  end
+
+  def account
+    investor && investor.account
   end
 end
