@@ -18,27 +18,43 @@ class SingleSignOn
   end
 
   def find_or_create_user
-    return false if client.error? # too confusing implicit call to auth
+    return false if client.error?
 
-    User.create_with(user_params).find_or_create_by! word_press_id: user['id']
+    if user = User.find_by(word_press_id: provider_user['id'])
+      user
+    else
+      create_user
+    end
+    # User.find_by word_press_id: provider_user['id'] || create_user
   end
 
   def client
     @client ||= WordPress.authenticate credentials
   end
 
+  def create_user
+    User.create!(user_params).tap do |user|
+      investor = user.build_investor investor_params
+      investor.save validate: false
+    end
+  end
+
   def user_params
     {
-      first_name: user['first_name'],
-      last_name: user['last_name'],
-      email: user['email'],
-      username: credentials[:username],
-      password: credentials[:password],
-      password_confirmation: credentials[:password]
+      word_press_id: provider_user['id'],
+      username: credentials[:username]
     }
   end
 
-  def user
-    @user = client.current_user
+  def investor_params
+    {
+      first_name: provider_user['first_name'],
+      last_name: provider_user['last_name'],
+      email: provider_user['email']
+    }
+  end
+
+  def provider_user
+    @provider_user = client.current_user
   end
 end

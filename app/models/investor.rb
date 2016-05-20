@@ -19,7 +19,7 @@ class Investor < ActiveRecord::Base
   validates :state,    presence: true, length: { maximum: 30 }
   validates :zip,      presence: true, length: { maximum: 9 }
 
-  before_save { email.downcase! }
+  before_save { email.downcase! if email }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 50 },
                     format: { with: VALID_EMAIL_REGEX },

@@ -59,6 +59,11 @@ describe SingleSignOn do
         .to change(User, :count).by(1)
       end
 
+      it 'creates new investor' do
+        expect { SingleSignOn.authenticate credentials }
+        .to change(Investor, :count).by(1)
+      end
+
       it 'uses username for new user params' do
         user = SingleSignOn.authenticate credentials
         expect(user.username).to eq(credentials[:username])
@@ -67,9 +72,9 @@ describe SingleSignOn do
       it 'maps word_press data to new investor params' do
         user = SingleSignOn.authenticate credentials
 
-        expect(investor.first_name).to eq(mock_client.current_user['first_name'])
-        expect(investor.last_name).to eq(mock_client.current_user['last_name'])
-        expect(investor.email).to eq(mock_client.current_user['email'])
+        expect(user.investor.first_name).to eq(mock_client.current_user['first_name'])
+        expect(user.investor.last_name).to eq(mock_client.current_user['last_name'])
+        expect(user.investor.email).to eq(mock_client.current_user['email'])
       end
 
       it 'maps id to word_press_id' do
@@ -83,7 +88,7 @@ describe SingleSignOn do
       end
 
       it 'raises error if user creation validation fails' do
-        mock_client.stub(:current_user).and_return 'id' => 2
+        mock_client.stub(:current_user).and_return({})
 
         expect { SingleSignOn.authenticate credentials }
         .to raise_error ActiveRecord::RecordInvalid
