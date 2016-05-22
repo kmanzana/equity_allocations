@@ -1,10 +1,8 @@
 describe Investor do
   describe 'validations' do
     let(:investor) do
-      Investor.new first_name: 'Alan', last_name: 'Watts', middle_name: 'James',
-                   email: 'alan@watts.com', tax_id: 123456789, person: true,
-                   address1: '1234 Some St', city: 'Somewhere', state: 'IL',
-                   zip: '12345', birth_date: 30.years.ago
+      Investor.new first_name: 'Alan', last_name: 'Watts',
+                   email: 'alan@watts.com', person: true
     end
 
     it 'is valid' do
@@ -21,18 +19,13 @@ describe Investor do
       expect(investor).to_not be_valid
     end
 
+    it 'validates email presence' do
+      investor.email = '   '
+      expect(investor).to_not be_valid
+    end
+
     it 'validates organization_name absence' do
       investor.organization_name = 'Some Org'
-      expect(investor).to_not be_valid
-    end
-
-    it 'validates email presence' do
-      investor.email = '      '
-      expect(investor).to_not be_valid
-    end
-
-    it 'validates tax_id presence' do
-      investor.tax_id = nil
       expect(investor).to_not be_valid
     end
 
@@ -86,24 +79,6 @@ describe Investor do
       expect(mixed_case_email.downcase).to eq(investor.reload.email)
     end
 
-    it 'allows valid tax ids' do
-      valid_tax_ids = [512122291, 990001312]
-
-      valid_tax_ids.each do |valid_tax_id|
-        investor.tax_id = valid_tax_id
-        expect(investor).to be_valid, "expect #{valid_tax_id.inspect} to be valid"
-      end
-    end
-
-    it 'rejects invalid tax ids' do
-      invalid_tax_ids = [0, 12345678, 1234567890, 9380823090]
-
-      invalid_tax_ids.each do |invalid_tax_id|
-        investor.tax_id = invalid_tax_id
-        expect(investor).to_not be_valid, "expect #{invalid_tax_id.inspect} to be invalid"
-      end
-    end
-
     context 'when investor is an organization' do
       let(:organization_investor) do
         Investor.new organization_name: 'Some Org', email: 'some@org.com',
@@ -124,6 +99,60 @@ describe Investor do
       it 'validates first_name absence' do
         organization_investor.first_name = 'name'
         expect(organization_investor).to_not be_valid
+      end
+    end
+  end
+
+  describe '#valid_for_crowd_pay?' do
+    let(:investor) { FactoryGirl.build :investor_ready_for_crowd_pay }
+
+    it 'is true for investor with all valid info' do
+      expect(investor).to be_valid_for_crowd_pay
+    end
+
+    it 'validates first_name presence' do
+      investor.first_name = ''
+      expect(investor).to_not be_valid_for_crowd_pay
+    end
+
+    it 'validates middle_name presence' do
+      investor.middle_name = ''
+      expect(investor).to_not be_valid_for_crowd_pay
+      expect(investor.errors.messages[:middle_name]).to eq(['can\'t be blank'])
+    end
+
+    it 'validates address1 presence' do
+      investor.address1 = ''
+      expect(investor).to_not be_valid_for_crowd_pay
+      expect(investor.errors.messages[:address1]).to eq(['can\'t be blank'])
+    end
+
+    it 'does not validate address 2 presence' do
+      investor.address2 = '   '
+      expect(investor).to be_valid_for_crowd_pay
+    end
+
+    it 'validates tax_id presence' do
+      investor.tax_id = nil
+      expect(investor).to_not be_valid_for_crowd_pay
+      expect(investor.errors.messages[:tax_id]).to eq(['tax id must be 9 digits'])
+    end
+
+    it 'allows valid tax ids' do
+      valid_tax_ids = [512122291, 990001312]
+
+      valid_tax_ids.each do |valid_tax_id|
+        investor.tax_id = valid_tax_id
+        expect(investor).to be_valid_for_crowd_pay, "expect #{valid_tax_id.inspect} to be valid"
+      end
+    end
+
+    it 'rejects invalid tax ids' do
+      invalid_tax_ids = [0, 12345678, 1234567890, 9380823090]
+
+      invalid_tax_ids.each do |invalid_tax_id|
+        investor.tax_id = invalid_tax_id
+        expect(investor).to_not be_valid_for_crowd_pay, "expect #{invalid_tax_id.inspect} to be invalid"
       end
     end
   end

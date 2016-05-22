@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  has_one :investor
+  has_one :investor, dependent: :destroy
   attr_accessor :remember_token
 
   validates_presence_of :word_press_id, :username

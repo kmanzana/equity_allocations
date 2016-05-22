@@ -1,0 +1,65 @@
+<% provide(:title, 'Personal Info') %>
+<h1>Please provide your investor personal info</h1>
+
+<div class='row'>
+  <div class='backdrop col-md-6 col-md-offset-3'>
+    <%= form_for(@investor, url: investors_path, method: :POST) do |f| %>
+      <% if @investor.errors.any? %>
+        <div id='error_explanation'>
+          <div class='alert alert-danger'>
+            The form contains <%= pluralize(@investor.errors.count, 'error') %>.
+          </div>
+          <ul>
+            <% @investor.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= f.label :first_name %>
+      <%= f.text_field :first_name, class: 'form-control' %>
+
+      <%= f.label :middle_name %>
+      <%= f.text_field :middle_name, class: 'form-control' %>
+
+      <%= f.label :last_name %>
+      <%= f.text_field :last_name, class: 'form-control' %>
+
+      <br/>
+
+      <%= f.label :address %>
+      <%= f.text_field :address1, class: 'form-control' %>
+
+      <%= f.label :address_line_2 %>
+      <%= f.text_field :address2, class: 'form-control' %>
+
+      <%= f.label :city %>
+      <%= f.text_field :city, class: 'form-control' %>
+
+      <%= f.label :state %>
+      <%= f.text_field :state, class: 'form-control' %>
+
+      <%= f.label :zip %>
+      <%= f.text_field :zip, class: 'form-control' %>
+
+      <%= f.label :foreign_address %>
+      <%= f.check_box :foreign_address, class: 'checkbox inline' %>
+
+      <br/>
+
+      <%= f.label :email %>
+      <%= f.text_field :email, class: 'form-control' %>
+
+      <%= f.label 'Tax id' %>
+      <%= f.text_field :tax_id, class: 'form-control' %>
+
+      <%= f.label :birth_date %>
+      <%= f.date_field :birth_date, class: 'form-control' %>
+
+      <br/>
+
+      <%= f.submit 'Save', class: 'btn btn-success' %>
+    <% end %>
+  </div>
+</div>

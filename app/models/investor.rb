@@ -5,19 +5,16 @@ class Investor < ActiveRecord::Base
   # acceptance validation?
 
   validates :first_name,  presence: true, length: { maximum: 50 }, if: :person?
-  validates :middle_name, presence: true, length: { maximum: 50 }, if: :person?
+  validates :middle_name, length: { maximum: 50 }, if: :person?
   validates :last_name,   presence: true, length: { maximum: 50 }, if: :person?
   validates :organization_name, presence: true, length: { maximum: 150 }, unless: :person?
   validate :correct_name_presence
 
-  validate :tax_id_length
-  validates_presence_of :birth_date
-
-  validates :address1, presence: true, length: { maximum: 40 }
-  validates :address2,                 length: { maximum: 40 }
-  validates :city,     presence: true, length: { maximum: 40 }
-  validates :state,    presence: true, length: { maximum: 30 }
-  validates :zip,      presence: true, length: { maximum: 9 }
+  validates :address1, length: { maximum: 40 }
+  validates :address2, length: { maximum: 40 }
+  validates :city,     length: { maximum: 40 }
+  validates :state,    length: { maximum: 30 }
+  validates :zip,      length: { maximum: 9 }
 
   before_save { email.downcase! if email }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
@@ -25,15 +22,24 @@ class Investor < ActiveRecord::Base
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
 
+  def valid_for_crowd_pay?
+    valid? && present?(:middle_name, :address1, :city, :state, :zip) &&
+    tax_id_length_valid?
+  end
+
   private
 
-  def tax_id_length
-    length = tax_id.to_s.length
+  def present? *attributes
+    attributes.reduce(true) do |all_present, attribute|
+      present = send(attribute).present?
+      errors.add(attribute, 'can\'t be blank') unless present
+      all_present && present
+    end
+  end
 
-    if length > 9
-      errors.add :tax_id, 'can\'t be more than 9 digits'
-    elsif length < 9
-      errors.add :tax_id, 'can\'t be less than 9 digits'
+  def tax_id_length_valid?
+    (tax_id.to_s.length == 9).tap do |valid|
+      errors.add(:tax_id, 'tax id must be 9 digits') unless valid
     end
   end
 
