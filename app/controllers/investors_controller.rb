@@ -24,6 +24,6 @@ class InvestorsController < ApplicationController
   def investor_params
     params.require(:investor)
     .permit :first_name, :middle_name, :last_name, :address1, :address2, :city,
-            :state, :zip, :email, :tax_id, :birth_date
+            :state, :zip, :email, :tax_id, :birth_date, :foreign_address
   end
 end
