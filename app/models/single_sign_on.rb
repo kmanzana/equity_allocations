@@ -5,9 +5,9 @@ class SingleSignOn
   end
 
   # requires storing of access_token and refresh_token, which isn't necessary for anything else?
-#   def SingleSignOn.logout user
-#     client.destroy
-#   end
+  # def SingleSignOn.logout user
+  #   client.destroy
+  # end
 
   private
 
@@ -20,12 +20,7 @@ class SingleSignOn
   def find_or_create_user
     return false if client.error?
 
-    if user = User.find_by(word_press_id: provider_user['id'])
-      user
-    else
-      create_user
-    end
-    # User.find_by word_press_id: provider_user['id'] || create_user
+    User.find_by(word_press_id: provider_user['id']) || create_user
   end
 
   def client
@@ -48,6 +43,7 @@ class SingleSignOn
 
   def investor_params
     {
+      person: true, # to be removed once orgs are supported
       first_name: provider_user['first_name'],
       last_name: provider_user['last_name'],
       email: provider_user['email']

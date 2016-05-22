@@ -24,6 +24,9 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include Helpers, type: :request
 
+  config.filter_run focus: true
+  config.run_all_when_everything_filtered = true
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
