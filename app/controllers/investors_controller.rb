@@ -14,7 +14,7 @@ class InvestorsController < ApplicationController
     if integrator.success?
       redirect_to billing_info_path
     else
-      flash.now[:danger] = integrator.error
+      flash.now[:danger] = integrator.error #
       render :personal_info
     end
   end

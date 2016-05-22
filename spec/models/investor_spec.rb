@@ -127,6 +127,12 @@ describe Investor do
       expect(investor.errors.messages[:address1]).to eq(['can\'t be blank'])
     end
 
+    it 'validates birth_date presence' do
+      investor.birth_date = nil
+      expect(investor).to_not be_valid_for_crowd_pay
+      expect(investor.errors.messages[:birth_date]).to eq(['can\'t be blank'])
+    end
+
     it 'does not validate address 2 presence' do
       investor.address2 = '   '
       expect(investor).to be_valid_for_crowd_pay

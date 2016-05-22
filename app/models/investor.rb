@@ -23,7 +23,7 @@ class Investor < ActiveRecord::Base
                     uniqueness: { case_sensitive: false }
 
   def valid_for_crowd_pay?
-    valid? && present?(:middle_name, :address1, :city, :state, :zip) &&
+    valid? && present?(:middle_name, :address1, :city, :state, :zip, :birth_date) &&
     tax_id_length_valid?
   end
 
