@@ -9,4 +9,8 @@ class Account < ActiveRecord::Base
   def exists_in_crowd_pay?
     account_id?
   end
+
+  def user
+    investor && investor.user
+  end
 end
