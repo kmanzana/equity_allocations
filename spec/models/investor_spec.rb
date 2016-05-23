@@ -1,12 +1,19 @@
 describe Investor do
   describe 'validations' do
+    let(:user) { FactoryGirl.create :user }
+
     let(:investor) do
-      Investor.new first_name: 'Alan', last_name: 'Watts',
+      Investor.new user: user, first_name: 'Alan', last_name: 'Watts',
                    email: 'alan@watts.com', person: true
     end
 
     it 'is valid' do
       expect(investor).to be_valid
+    end
+
+    it 'validates user_id presence' do
+      investor.user_id = nil
+      expect(investor).to_not be_valid
     end
 
     it 'validates first_name presence' do
@@ -81,7 +88,7 @@ describe Investor do
 
     context 'when investor is an organization' do
       let(:organization_investor) do
-        Investor.new organization_name: 'Some Org', email: 'some@org.com',
+        Investor.new user: user, organization_name: 'Some Org', email: 'some@org.com',
                      tax_id: 123456789, person: false,
                      address1: '1234 Some St', city: 'Somewhere', state: 'IL',
                      zip: '12345', birth_date: 40.years.ago
@@ -104,7 +111,7 @@ describe Investor do
   end
 
   describe '#valid_for_crowd_pay?' do
-    let(:investor) { FactoryGirl.build :investor_ready_for_crowd_pay }
+    let(:investor) { FactoryGirl.build :investor, :ready_for_crowd_pay }
 
     it 'is true for investor with all valid info' do
       expect(investor).to be_valid_for_crowd_pay

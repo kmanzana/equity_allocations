@@ -1,5 +1,5 @@
 describe InvestorIntegrator do
-  let(:investor) { FactoryGirl.create :investor, :new }
+  let(:investor) { FactoryGirl.create :investor }
   let(:attributes) { FactoryGirl.attributes_for :investor, :ready_for_crowd_pay }
 
   let(:verification) do

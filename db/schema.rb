@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519171535) do
+ActiveRecord::Schema.define(version: 20160522200115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "accounts", force: :cascade do |t|
+    t.boolean  "savings_account", default: false
+    t.integer  "routing_number"
+    t.integer  "account_number"
+    t.integer  "investor_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "accounts", ["investor_id"], name: "index_accounts_on_investor_id", using: :btree
 
   create_table "investors", force: :cascade do |t|
     t.integer  "user_id"
@@ -54,5 +65,6 @@ ActiveRecord::Schema.define(version: 20160519171535) do
 
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "accounts", "investors"
   add_foreign_key "investors", "users"
 end

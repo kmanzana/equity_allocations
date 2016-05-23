@@ -9,14 +9,13 @@ class InvestorIntegrator
     investor.update_attributes attributes
 
     if investor.valid_for_crowd_pay?
-      #verify
-      create #if verification.pass?
+      verify
+      create if verification.pass?
     end
   end
 
   def success?
-    investor.valid_for_crowd_pay? && crowd_pay_investor.errors.empty?
-    # investor.valid_for_crowd_pay? && verification.pass? &&
+    investor.valid_for_crowd_pay? && verification.pass? &&
     crowd_pay_investor.errors.empty?
   end
 
