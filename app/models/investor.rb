@@ -28,6 +28,10 @@ class Investor < ActiveRecord::Base
     tax_id_length_valid? && valid?
   end
 
+  def exists_in_crowd_pay?
+    investor_id?
+  end
+
   private
 
   def present? *attributes

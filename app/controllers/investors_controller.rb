@@ -1,20 +1,22 @@
 class InvestorsController < ApplicationController
   def personal_info
-    @investor = current_user.investor
-
-    redirect_to(billing_info_path) if @investor.investor_id
+    if current_user.investor_exists_in_crowd_pay?
+      redirect_to(billing_info_path)
+    else
+      @investor = current_user.investor
+    end
   end
 
   def create
-    @investor = current_user.investor # setting @investor to show errors when personal info is rendered
-
-    integrator = InvestorIntegrator.new @investor, investor_params, request.remote_ip
+    integrator = InvestorIntegrator.new current_user.investor, investor_params, request.remote_ip
     integrator.verify_and_create_external_investor
 
     if integrator.success?
       redirect_to billing_info_path
     else
-      flash.now[:danger] = integrator.error #
+      # setting @investor to show errors when personal info is rendered
+      @investor = current_user.investor
+      flash.now[:danger] = integrator.error
       render :personal_info
     end
   end

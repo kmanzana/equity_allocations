@@ -15,5 +15,12 @@ FactoryGirl.define do
       state 'IL'
       zip '12345'
     end
+
+    trait :in_crowd_pay do
+      ready_for_crowd_pay
+
+      investor_id 82184
+      investor_key '9250040b-effc-4e1f-b63a-d541f0e56085'
+    end
   end
 end

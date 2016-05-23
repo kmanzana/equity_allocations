@@ -169,4 +169,16 @@ describe Investor do
       end
     end
   end
+
+  describe '#exists_in_crowd_pay?' do
+    it 'returns true if investor_id is already set' do
+      investor = FactoryGirl.build :investor, :in_crowd_pay
+      expect(investor).to be_exists_in_crowd_pay
+    end
+
+    it 'returns false if no investor_id' do
+      investor = FactoryGirl.build :investor
+      expect(investor).to_not be_exists_in_crowd_pay
+    end
+  end
 end

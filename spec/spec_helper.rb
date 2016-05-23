@@ -22,7 +22,7 @@ require 'webmock/rspec'
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
-  config.include Helpers, type: :request
+  config.include Helpers#, type: :request
 
   config.filter_run focus: true
   config.run_all_when_everything_filtered = true

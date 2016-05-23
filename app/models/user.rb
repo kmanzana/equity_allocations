@@ -31,4 +31,8 @@ class User < ActiveRecord::Base
   def account
     investor && investor.account
   end
+
+  def investor_exists_in_crowd_pay?
+    investor && investor.exists_in_crowd_pay?
+  end
 end
