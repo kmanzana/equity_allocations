@@ -26,10 +26,8 @@ class AccountsController < ApplicationController
 
   def check_investor_and_account_existence
     if current_user.account_exists_in_crowd_pay?
-      return redirect_to confirm_path
-    end
-
-    unless current_user.investor_exists_in_crowd_pay?
+      redirect_to confirm_path
+    elsif !current_user.investor_exists_in_crowd_pay?
       redirect_to personal_info_path
     end
   end

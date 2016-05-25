@@ -31,7 +31,7 @@ class InvestorsController < ApplicationController
 
   def check_investor_existence
     if current_user.investor_exists_in_crowd_pay?
-      redirect_to(billing_info_path)
+      redirect_to billing_info_path
     end
   end
 end

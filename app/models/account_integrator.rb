@@ -40,7 +40,7 @@ class AccountIntegrator
       status_id: 1,
       account_type_id: 12,
       contact_email: account.email,
-      created_by_ip_address: '0.0.0.0'
+      created_by_ip_address: ip
     }
   end
 end

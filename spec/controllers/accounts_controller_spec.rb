@@ -1,5 +1,5 @@
 describe AccountsController do
-  describe 'GET #billing_info' do
+  describe 'GET #billing_info', focus: true do
     let(:user) { FactoryGirl.create :user, :with_investor }
 
     before { log_in_as user }
