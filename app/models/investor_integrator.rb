@@ -43,8 +43,8 @@ class InvestorIntegrator
   def create
     @crowd_pay_investor = CrowdPay::Investor.create create_investor_params
 
-    investor.update_attributes investor_id: crowd_pay_investor.id,
-                               investor_key: crowd_pay_investor.investor_key
+    investor.update_attributes crowd_pay_id: crowd_pay_investor.id,
+                               crowd_pay_key: crowd_pay_investor.investor_key
 
     # upload acceptance document
   end

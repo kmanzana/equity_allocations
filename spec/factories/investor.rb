@@ -19,8 +19,9 @@ FactoryGirl.define do
     trait :in_crowd_pay do
       ready_for_crowd_pay
 
-      investor_id 82184
-      investor_key '9250040b-effc-4e1f-b63a-d541f0e56085'
+      crowd_pay_id 82184
+      crowd_pay_key '9250040b-effc-4e1f-b63a-d541f0e56085'
+      verified true
     end
   end
 end

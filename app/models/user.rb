@@ -14,6 +14,10 @@ class User < ActiveRecord::Base
     SecureRandom.urlsafe_base64
   end
 
+  delegate :account, to: :investor, allow_nil: true
+  delegate :exists_in_crowd_pay?, to: :investor, prefix: true, allow_nil: true
+  delegate :exists_in_crowd_pay?, to: :account, prefix: true, allow_nil: true
+
   def remember
      self.remember_token = User.new_token
     update_attribute :remember_digest, User.digest(remember_token)
@@ -28,11 +32,11 @@ class User < ActiveRecord::Base
     update_attribute(:remember_digest, nil)
   end
 
-  def account
-    investor && investor.account
+  def get_or_build_account
+    account || build_account
   end
 
-  def investor_exists_in_crowd_pay?
-    investor && investor.exists_in_crowd_pay?
-  end
+  private
+
+  delegate :build_account, to: :investor
 end

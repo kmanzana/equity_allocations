@@ -29,7 +29,7 @@ class Investor < ActiveRecord::Base
   end
 
   def exists_in_crowd_pay?
-    investor_id?
+    crowd_pay_id?
   end
 
   private
