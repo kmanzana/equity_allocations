@@ -48,12 +48,12 @@ describe Account do
   end
 
   describe '#exists_in_crowd_pay?' do
-    it 'returns true if account_id is already set' do
+    it 'returns true if crowd_pay_id is already set' do
       account = FactoryGirl.build :account, :in_crowd_pay
       expect(account).to be_exists_in_crowd_pay
     end
 
-    it 'returns false if no account_id' do
+    it 'returns false if no crowd_pay_id' do
       account = FactoryGirl.build :account
       expect(account).to_not be_exists_in_crowd_pay
     end

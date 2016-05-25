@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160523153700) do
+ActiveRecord::Schema.define(version: 20160525165009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20160523153700) do
     t.integer  "investor_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "account_id"
+    t.integer  "crowd_pay_id"
     t.string   "account_name"
   end
 
@@ -33,8 +33,8 @@ ActiveRecord::Schema.define(version: 20160523153700) do
     t.integer  "user_id"
     t.integer  "tax_id"
     t.boolean  "verified"
-    t.integer  "investor_id"
-    t.string   "investor_key"
+    t.integer  "crowd_pay_id"
+    t.string   "crowd_pay_key"
     t.string   "first_name"
     t.string   "middle_name"
     t.string   "last_name"
@@ -52,8 +52,8 @@ ActiveRecord::Schema.define(version: 20160523153700) do
     t.datetime "updated_at",        null: false
   end
 
-  add_index "investors", ["investor_id"], name: "index_investors_on_investor_id", unique: true, using: :btree
-  add_index "investors", ["investor_key"], name: "index_investors_on_investor_key", unique: true, using: :btree
+  add_index "investors", ["crowd_pay_id"], name: "index_investors_on_crowd_pay_id", unique: true, using: :btree
+  add_index "investors", ["crowd_pay_key"], name: "index_investors_on_crowd_pay_key", unique: true, using: :btree
   add_index "investors", ["tax_id"], name: "index_investors_on_tax_id", unique: true, using: :btree
   add_index "investors", ["user_id"], name: "index_investors_on_user_id", using: :btree
 

@@ -6,11 +6,10 @@ class Account < ActiveRecord::Base
   validates :account_number, presence: true, length: { maximum: 17 }
   validates :account_name,   presence: true, length: { maximum: 50 }
 
-  def exists_in_crowd_pay?
-    account_id?
-  end
+  delegate :user, :foreign_address?, :verified?, :email, to: :investor
+  delegate :crowd_pay_id, to: :investor, prefix: true
 
-  def user
-    investor && investor.user
+  def exists_in_crowd_pay?
+    crowd_pay_id?
   end
 end

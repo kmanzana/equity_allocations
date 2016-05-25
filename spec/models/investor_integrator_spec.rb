@@ -91,8 +91,8 @@ describe InvestorIntegrator do
       integrator = InvestorIntegrator.new investor, attributes, '123.456.789.012'
       integrator.verify_and_create_external_investor
 
-      expect(investor.investor_id).to eq(crowd_pay_investor.id)
-      expect(investor.investor_key).to eq(crowd_pay_investor.investor_key)
+      expect(investor.crowd_pay_id).to eq(crowd_pay_investor.id)
+      expect(investor.crowd_pay_key).to eq(crowd_pay_investor.investor_key)
     end
   end
 

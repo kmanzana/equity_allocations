@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   post 'investors'    => 'investors#create'
   get 'billing_info'  => 'accounts#billing_info'
   post 'accounts'     => 'accounts#create'
-
+  get 'confirm'       => 'investments#confirm'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
