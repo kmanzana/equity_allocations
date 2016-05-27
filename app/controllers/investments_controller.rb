@@ -14,6 +14,7 @@ class InvestmentsController < ApplicationController
 
     if investment.save
       FundAccount.draft current_user.account, investment, request.remote_ip
+      InvestorMailer.welcome_email(current_user.investor).deliver_later
       redirect_to investment
     else
       render plain: "Something went wrong\n#{investment.errors.messages}"
@@ -21,7 +22,7 @@ class InvestmentsController < ApplicationController
   end
 
   def show
-    @investment = Investment.find params[:id]
+    @investment = Investment.find(params[:id]).decorate
   end
 
   private

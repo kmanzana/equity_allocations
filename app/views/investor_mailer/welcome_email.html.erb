@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Welcome to Equity Allocations, <%= @investor.first_name %></h1>
+    <p>
+      You have successfully set up your investor account and
+      funded an investment.<br>
+    </p>
+    <p>
+      We would also suggest that you view the short video <%= link_to 'How Equity Crowdfunding Escrow works.', '//www.youtube.com/watch?v=In9IM752dNI' %>
+    </p>
+    <p>
+      Thank you for choosing Equity Allocations Funding Portal.
+      Should you have any questions, email us back at <%= mail_to 'info@equityallocations.com' %>.
+    </p>
+    <p>Sincerely,</p>
+    <p>Equity Allocations: New Clients Team</p>
+  </body>
+</html>
