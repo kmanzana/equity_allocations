@@ -10,12 +10,13 @@ class InvestmentsController < ApplicationController
   end
 
   def create
-    @investment = current_user.build_investment investment_params
+    investment = current_user.build_investment investment_params
 
-    if @investment.save
-      redirect_to @investment
+    if investment.save
+      FundAccount.draft current_user.account, investment, request.remote_ip
+      redirect_to investment
     else
-      render plain: "Something went wrong\n#{@investment.errors.messages}"
+      render plain: "Something went wrong\n#{investment.errors.messages}"
     end
   end
 

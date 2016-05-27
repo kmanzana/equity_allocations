@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160526225107) do
+ActiveRecord::Schema.define(version: 20160527121112) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,20 @@ ActiveRecord::Schema.define(version: 20160526225107) do
   add_index "investors", ["tax_id"], name: "index_investors_on_tax_id", unique: true, using: :btree
   add_index "investors", ["user_id"], name: "index_investors_on_user_id", using: :btree
 
+  create_table "transactions", force: :cascade do |t|
+    t.integer  "account_id"
+    t.integer  "investment_id"
+    t.integer  "crowd_pay_id"
+    t.string   "command"
+    t.integer  "amount"
+    t.datetime "date"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "transactions", ["account_id"], name: "index_transactions_on_account_id", using: :btree
+  add_index "transactions", ["investment_id"], name: "index_transactions_on_investment_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
@@ -82,4 +96,6 @@ ActiveRecord::Schema.define(version: 20160526225107) do
   add_foreign_key "accounts", "investors"
   add_foreign_key "investments", "accounts"
   add_foreign_key "investors", "users"
+  add_foreign_key "transactions", "accounts"
+  add_foreign_key "transactions", "investments"
 end

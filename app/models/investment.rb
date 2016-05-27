@@ -1,5 +1,6 @@
 class Investment < ActiveRecord::Base
   belongs_to :account
+  has_many :transactions
 
   validates :terms, acceptance: true
 

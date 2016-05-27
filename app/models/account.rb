@@ -1,6 +1,7 @@
 class Account < ActiveRecord::Base
   belongs_to :investor
   has_many :investments, dependent: :destroy
+  has_many :transactions, dependent: :destroy
 
   validates :investor_id,    presence: true
   validates :routing_number, presence: true, length: { maximum: 9 }
