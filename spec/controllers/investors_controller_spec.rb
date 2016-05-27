@@ -9,7 +9,7 @@ describe InvestorsController do
 
       get :personal_info
 
-      expect(response).to redirect_to(billing_info_path)
+      expect(response).to redirect_to(new_account_path)
     end
 
     it 'renders template if investor does not exist in crowd_pay' do
@@ -66,7 +66,7 @@ describe InvestorsController do
     it 'redirects to billing_info when verify and create succeed' do
       post :create, investor: investor_params
 
-      expect(response).to redirect_to(billing_info_path)
+      expect(response).to redirect_to(new_account_path)
     end
 
     context 'when investor verify and create fails' do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160525165009) do
+ActiveRecord::Schema.define(version: 20160526225107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,16 @@ ActiveRecord::Schema.define(version: 20160525165009) do
   end
 
   add_index "accounts", ["investor_id"], name: "index_accounts_on_investor_id", using: :btree
+
+  create_table "investments", force: :cascade do |t|
+    t.integer  "account_id"
+    t.integer  "amount"
+    t.integer  "number_of_shares"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "investments", ["account_id"], name: "index_investments_on_account_id", using: :btree
 
   create_table "investors", force: :cascade do |t|
     t.integer  "user_id"
@@ -50,6 +60,8 @@ ActiveRecord::Schema.define(version: 20160525165009) do
     t.string   "email"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.integer  "annual_income"
+    t.integer  "net_worth"
   end
 
   add_index "investors", ["crowd_pay_id"], name: "index_investors_on_crowd_pay_id", unique: true, using: :btree
@@ -68,5 +80,6 @@ ActiveRecord::Schema.define(version: 20160525165009) do
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   add_foreign_key "accounts", "investors"
+  add_foreign_key "investments", "accounts"
   add_foreign_key "investors", "users"
 end

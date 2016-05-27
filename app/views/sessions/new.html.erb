@@ -1,11 +1,10 @@
 <% provide(:title, 'Log in') %>
-<div class='text-center'>
-  <strong>Please confirm your EquityAllocations.com credentials to continue</strong>
-</div>
+<h3 class='text-center'>Step 1/4</h3>
+<h4 class='text-center'>Please confirm your EquityAllocations.com credentials to continue.</h4>
 <br/>
 
 <div class='row'>
-  <div class='col-md-6 col-md-offset-3'>
+  <div class='backdrop col-md-6 col-md-offset-3'>
     <%= form_for(:session, url: login_path) do |f| %>
       <%= f.label :username %>
       <%= f.text_field :username, class: 'form-control' %>
@@ -20,7 +19,7 @@
 
       <%= f.submit 'Log in', class: 'btn btn-success' %>
     <% end %>
-
+    <br/>
     <p>New user? <%= link_to 'Sign up now!', '//equityallocations.com/my-account/?action=register' %></p>
   </div>
 </div>

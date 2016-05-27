@@ -12,11 +12,10 @@ Rails.application.routes.draw do
   delete 'logout' => 'sessions#destroy'
   resources :users
 
-  get 'personal_info' => 'investors#personal_info'
-  post 'investors'    => 'investors#create'
-  get 'billing_info'  => 'accounts#billing_info'
-  post 'accounts'     => 'accounts#create'
-  get 'confirm'       => 'investments#confirm'
+  get 'amount' => 'investments#amount'
+  resources :investors,   only: [:new, :create]
+  resources :accounts,    only: [:new, :create]
+  resources :investments, only: [:new, :create, :show]
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

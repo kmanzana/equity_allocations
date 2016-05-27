@@ -2,8 +2,6 @@ class Investor < ActiveRecord::Base
   belongs_to :user
   has_one :account, dependent: :destroy
 
-  # acceptance validation?
-
   validates_presence_of :user_id
   validates :first_name,  presence: true, length: { maximum: 50 }, if: :person?
   validates :middle_name, length: { maximum: 50 }, if: :person?
@@ -23,8 +21,11 @@ class Investor < ActiveRecord::Base
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
 
+  validates :terms, acceptance: true
+
   def valid_for_crowd_pay?
-    present?(:middle_name, :address1, :city, :state, :zip, :birth_date) &&
+    # annual_income & net_worth aren't needed for crowd_pay, a bit confusing
+    present?(:address1, :city, :state, :zip, :birth_date, :annual_income, :net_worth) &&
     tax_id_length_valid? && valid?
   end
 

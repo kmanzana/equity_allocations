@@ -1,0 +1,99 @@
+<% provide(:title, 'Investor Info') %>
+<h3 class='text-center'>Step 2/4</h3>
+<h4 class='text-center'>Please provide your investor information.</h4>
+<br/>
+
+<div class='row'>
+  <div class='backdrop col-md-6 col-md-offset-3'>
+    <span class='help-block'>The following information will be used in order to contact you, provide tax documentation, and verify your identity in order to prevent fraudelant use of this platform. At this time, only individuals are allowed to sign up for the platform.</span>
+    <br/>
+    <%= form_for(@investor, url: investors_path(amount: params[:amount]), method: :POST) do |f| %>
+      <% if @investor.errors.any? %>
+        <div id='error_explanation'>
+          <div class='alert alert-danger'>
+            The form contains <%= pluralize(@investor.errors.count, 'error') %>.
+          </div>
+          <ul>
+            <% @investor.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class='form-group'>
+        <%= f.label :first_name, class: 'control-label' %>
+        <%= f.text_field :first_name, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label :middle_name, class: 'control-label' %>
+        <%= f.text_field :middle_name, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label :last_name, class: 'control-label' %>
+        <%= f.text_field :last_name, class: 'form-control' %>
+      </div>
+      <br/>
+      <div class='form-group'>
+        <%= f.label :address, class: 'control-label' %>
+        <%= f.text_field :address1, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label :address_line_2, class: 'control-label' %>
+        <%= f.text_field :address2, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label :city, class: 'control-label' %>
+        <%= f.text_field :city, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label :state, class: 'control-label' %>
+        <%= f.text_field :state, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label :zip, class: 'control-label' %>
+        <%= f.text_field :zip, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <div class='checkbox'>
+          <%= f.label :foreign_address do %>
+            <%= f.check_box :foreign_address, type: :checkbox %> <b>Foreign address</b>
+          <% end %>
+        </div>
+      </div>
+      <br/>
+      <div class='form-group'>
+        <%= f.label :email, class: 'control-label' %>
+        <%= f.text_field :email, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label 'Tax id', class: 'control-label' %>
+        <%= f.text_field :tax_id, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label :birth_date, class: 'control-label' %>
+        <%= f.date_field :birth_date, class: 'form-control' %>
+      </div>
+      <br/>
+      <div class='form-group'>
+        <%= f.label :annual_income, class: 'control-label' %>
+        <%= f.text_field :annual_income, class: 'form-control' %>
+        <span class='help-block'>for preceding 12 months</span>
+      </div>
+      <div class='form-group'>
+        <%= f.label :net_worth, class: 'control-label' %>
+        <%= f.text_field :net_worth, class: 'form-control' %>
+        <span class='help-block'>estimated, excluding primary residence</span>
+      </div>
+      <br/>
+      <div class='form-group'>
+        <div class='well checkbox'>
+          <%= f.label :terms, class: 'control-label' do %>
+            <%= f.check_box :terms, type: :checkbox %> I have read and understand the <%= link_to 'CrowdPay® Custodial Account Agreement', '/crowd_pay_custodial_account_agreement', target: '_blank' %> and I agree to all terms and conditions therein.
+          <% end %>
+        </div>
+      </div>
+      <%= f.submit 'Submit', class: 'btn btn-success' %>
+    <% end %>
+  </div>
+</div>

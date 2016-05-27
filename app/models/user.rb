@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   end
 
   delegate :account, to: :investor, allow_nil: true
+  delegate :build_investment, to: :account
   delegate :exists_in_crowd_pay?, to: :investor, prefix: true, allow_nil: true
   delegate :exists_in_crowd_pay?, to: :account, prefix: true, allow_nil: true
 

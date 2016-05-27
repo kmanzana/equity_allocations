@@ -12,12 +12,12 @@ describe AccountsController do
       expect(response).to redirect_to(confirm_path)
     end
 
-    it 'redirects to personal_info_path if investor does not exist' do
+    it 'redirects to new_investor_path if investor does not exist' do
       expect(controller.current_user).to receive(:investor_exists_in_crowd_pay?).and_return(false)
 
       get :billing_info
 
-      expect(response).to redirect_to(personal_info_path)
+      expect(response).to redirect_to(new_investor_path)
     end
 
     it 'assigns account as new built account' do
@@ -78,7 +78,7 @@ describe AccountsController do
         allow(integrator).to receive(:error)
       end
 
-      it 'renders billing_info_path' do
+      it 'renders new_account_path' do
         expect(integrator).to receive(:success?).and_return(false)
         post :create, account: attributes
         expect(response).to render_template(:billing_info)

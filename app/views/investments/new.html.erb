@@ -1,0 +1,43 @@
+<% provide(:title, 'Investment confirmation') %>
+<h3 class='text-center'>Step 4/4</h3>
+<h4 class='text-center'>Please confirm your investment.</h4>
+<br/>
+<div class='row'>
+  <div class='backdrop col-md-6 col-md-offset-3'>
+    <span class='help-block'>
+      An account in your name has been successfully established at CrowdPay.  You will receive an email with your account details.  In order to proceed with your investment for the below amount please proceed.
+    </span>
+    <%= form_for(@investment, url: investments_path, method: :POST) do |f| %>
+      <% if @investment.errors.any? %>
+        <div id='error_explanation'>
+          <div class='alert alert-danger'>
+            The form contains <%= pluralize(@investment.errors.count, 'error') %>.
+          </div>
+          <ul>
+            <% @investment.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class='form-group'>
+        <label class='sr-only' for='investment_amount'>Amount (in dollars)</label>
+        <div class='input-group'>
+          <div class='input-group-addon'>$</div>
+          <%= f.text_field :amount, class: 'form-control', placeholder: :Amount %>
+          <div class='input-group-addon'>.00</div>
+        </div>
+      </div>
+
+      <div class='form-group'>
+        <div class='well checkbox'>
+          <%= f.label :terms, class: 'control-label' do %>
+            <%= f.check_box :terms, type: :checkbox %> By clicking Proceed, I certify that I have read and understand the <%= link_to 'terms of service', '//equityallocations.com/terms-of-use', target: '_blank' %>, <%= link_to 'privacy policy', '//equityallocations.com/privacy-policy/', target: '_blank' %>, and the <%= link_to 'CrowdPay® Investment Direction', '/crowd_pay_investment_direction', target: '_blank' %>.
+          <% end %>
+        </div>
+      </div>
+      <%= f.submit 'Proceed', class: 'btn btn-success' %>
+    <% end %>
+  </div>
+</div>

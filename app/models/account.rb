@@ -1,5 +1,6 @@
 class Account < ActiveRecord::Base
   belongs_to :investor
+  has_many :investments, dependent: :destroy
 
   validates :investor_id,    presence: true
   validates :routing_number, presence: true, length: { maximum: 9 }
@@ -11,5 +12,9 @@ class Account < ActiveRecord::Base
 
   def exists_in_crowd_pay?
     crowd_pay_id?
+  end
+
+  def build_investment attributes
+    investments.build attributes
   end
 end

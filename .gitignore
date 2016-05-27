@@ -53,3 +53,5 @@ bower.json
 .powenv
 
 .byebug_history
+.DS_Store
+certs/
